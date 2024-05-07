@@ -6,12 +6,13 @@ import os
 
 # Function to load data
 def load_data():
+    path = '.'  
     frames = []
-    for file in os.listdir('data'):
+    for file in os.listdir(path):
         if file.endswith('.csv'):
-            df = pd.read_csv(f'data/{file}')
+            df = pd.read_csv(os.path.join(path, file))
             frames.append(df)
-    return pd.concat(frames)
+    return pd.concat(frames, ignore_index=True)
 
 # Preprocess and vectorize data
 def preprocess_data(data):
