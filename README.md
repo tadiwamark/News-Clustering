@@ -10,8 +10,8 @@ The aim of this project is to Extract data from four online newspapers using a s
 1. In each newspaper extract stories in these following categories
     <br>a. Business</b>
     <br>b. Politics</b>
-    c. Arts/Culture/Celebrities
-    d. Sports
-2. Store the data in csv(s) file(s)
+    <br>c. Arts/Culture/Celebrities</b>
+    <br>d. Sports</b>
+2. Store the data in csv(s) files
 3. Use Agglomerative Clustering to create clusters based on the categories of the stories. 
 4. Display a cluster and the urls of related stories in that cluster.
