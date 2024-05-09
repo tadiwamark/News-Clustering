@@ -25,7 +25,7 @@ def preprocess_data(data):
 
 # Clustering function
 def cluster_stories(tfidf_matrix, num_clusters=4):
-    km = KMeans(n_clusters=num_clusters)
+    km = KMeans(n_clusters=num_clusters, random_state=42)
     km.fit(tfidf_matrix)
     return km.labels_
 
