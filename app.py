@@ -2,9 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans, DBSCAN, AgglomerativeClustering
-from scipy.cluster.hierarchy import dendrogram
-import matplotlib.pyplot as plt
+from sklearn.cluster import AgglomerativeClustering
 import os
 
 
