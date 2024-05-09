@@ -1,3 +1,9 @@
+"""
+Student Details:
+
+Tadiwanashe Nyaruwata R204445V HAI 
+"""
+
 import streamlit as st
 import pandas as pd
 import numpy as np
