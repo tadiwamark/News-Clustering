@@ -24,6 +24,12 @@ def preprocess_data(data):
     tfidf_matrix = tfidf_vectorizer.fit_transform(data['story'])
     return tfidf_matrix
 
+# Clustering function
+def cluster_stories(tfidf_matrix, num_clusters=4):
+    km = KMeans(n_clusters=num_clusters, random_state=42)
+    km.fit(tfidf_matrix)
+    return km.labels_
+
 def find_optimal_clusters(data, max_k=10):
     iters = range(2, max_k+1)
     sse = []
