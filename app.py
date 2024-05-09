@@ -63,12 +63,14 @@ def main():
         if st.checkbox('Show URLs in selected cluster'):
             for url in filtered_data['url']:
                 st.write(url)
+    else:
+        st.write("No sufficient clusters formed. Try adjusting the clustering parameters or algorithm.")
+
+
     """if clustering_algorithm != 'DBSCAN' or np.any(data['cluster'] != -1):
         selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
         filtered_data = data[data['cluster'] == selected_cluster]"""
-    
-    else:
-        st.write("No sufficient clusters formed. Try adjusting the clustering parameters or algorithm.")
+
 
 
 if __name__ == '__main__':
