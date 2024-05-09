@@ -1,8 +1,16 @@
+"""
+Student Details:
+
+Tadiwanashe Nyaruwata R204445V HAI 
+"""
+
 import streamlit as st
 import pandas as pd
+import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
+from sklearn.cluster import AgglomerativeClustering
 import os
+
 
 # Function to load data
 def load_data():
@@ -16,42 +24,57 @@ def load_data():
 
 # Preprocess and vectorize data
 def preprocess_data(data):
-    # Handle NaN values in 'story' column
-    data['story'].fillna('', inplace=True)  
-    
+    data = data.copy()  
+    data['story'] = data['story'].fillna('')  
     tfidf_vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = tfidf_vectorizer.fit_transform(data['story'])
     return tfidf_matrix
 
+
 # Clustering function
-def cluster_stories(tfidf_matrix, num_clusters=4):
-    km = KMeans(n_clusters=num_clusters)
-    km.fit(tfidf_matrix)
-    return km.labels_
+def apply_clustering(tfidf_matrix, algorithm='Agglomerative', n_clusters=4, linkage='ward'):
+    if algorithm == 'Agglomerative':
+        model = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
+        tfidf_matrix = tfidf_matrix.toarray()  # Agglomerative requires dense matrix
+        model.fit(tfidf_matrix)
+        return model.labels_, model
 
-# Main app function
+
+
 def main():
-    st.title('News Story Clustering')
-
-    # Load and display data
+    st.title('News Clustering Based on 4 Categories')
     data = load_data()
     if st.checkbox('Show raw data'):
         st.write(data)
 
-    # Preprocess and cluster data
     tfidf_matrix = preprocess_data(data)
-    data['cluster'] = cluster_stories(tfidf_matrix)
-
-    # User input for selecting a cluster
-    selected_cluster = st.selectbox('Select a Cluster', data['cluster'].unique())
+    linkage_method = st.selectbox('Select Linkage Method', ['ward', 'complete', 'average', 'single'])
+    """Ward Linkage perfoms best"""
     
-    # Filter data based on the cluster
+    labels, model = apply_clustering(tfidf_matrix, algorithm='Agglomerative', linkage=linkage_method)
+    data['cluster'] = labels
+    
+
+    selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
     filtered_data = data[data['cluster'] == selected_cluster]
     
-    # Display URLs from the selected cluster
     if st.checkbox('Show URLs in selected cluster'):
         for url in filtered_data['url']:
             st.write(url)
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+    
+   
+
+
+
+
