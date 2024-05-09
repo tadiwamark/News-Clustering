@@ -8,8 +8,8 @@ Tadiwanashe Nyaruwata R204445V HAI
 The aim of this project is to Extract data from four online newspapers using a spider, and do the following:
 
 1. In each newspaper extract stories in these following categories
-    a. Business
-    b. Politics
+    <br>a. Business</b>
+    <br>b. Politics</b>
     c. Arts/Culture/Celebrities
     d. Sports
 2. Store the data in csv(s) file(s)
