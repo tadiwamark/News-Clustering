@@ -14,7 +14,15 @@ def load_data():
         if file.endswith('.csv'):
             df = pd.read_csv(os.path.join(path, file))
             frames.append(df)
-
+            
+# Preprocess and vectorize data
+def preprocess_data(data):
+    # Handle NaN values in 'story' column
+    data['story'].fillna('', inplace=True)  
+    
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = tfidf_vectorizer.fit_transform(data['story'])
+    return tfidf_matrix
 
 def find_optimal_clusters(data, max_k=10):
     iters = range(2, max_k+1)
