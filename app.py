@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score
+import streamlit as st
 
 
 def find_optimal_clusters(data, max_k=10):
