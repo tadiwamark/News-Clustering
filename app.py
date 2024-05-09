@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score
 import streamlit as st
+import os
 
 # Function to load data
 def load_data():
