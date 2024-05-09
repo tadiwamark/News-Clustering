@@ -5,7 +5,9 @@ https://news-clustering.streamlit.app/
 ## Student Details
 Tadiwanashe Nyaruwata R204445V HAI 
 
-The aim of this project is to Extract data from four online newspapers using a spider, and do the following:
+The aim of this project is to:
+
+Extract data from four online newspapers using a spider, and do the following:
 
 1. In each newspaper we want to extract stories in the following categories:
         <br>a. Business</b>
