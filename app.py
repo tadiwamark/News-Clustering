@@ -42,7 +42,7 @@ def apply_clustering(tfidf_matrix, algorithm='Agglomerative', n_clusters=4, link
 
 
 def main():
-    st.title('News Story Clustering')
+    st.title('News Clustering Based on 4 Categories')
     data = load_data()
     if st.checkbox('Show raw data'):
         st.write(data)
