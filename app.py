@@ -57,6 +57,7 @@ def main():
     data['cluster'] = apply_clustering(tfidf_matrix, algorithm=clustering_algorithm)
 
     if np.unique(data['cluster']).size > 1:
+        
         selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
         filtered_data = data[data['cluster'] == selected_cluster]
     """if clustering_algorithm != 'DBSCAN' or np.any(data['cluster'] != -1):
