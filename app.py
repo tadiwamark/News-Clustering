@@ -36,25 +36,7 @@ def apply_clustering(tfidf_matrix, algorithm='Agglomerative', n_clusters=4, link
         model.fit(tfidf_matrix)
         return model.labels_, model
 
-def plot_dendrogram(model, **kwargs):
-    # Create linkage matrix and then plot the dendrogram
-    # create the counts of samples under each node
-    counts = np.zeros(model.children_.shape[0])
-    n_samples = len(model.labels_)
-    for i, merge in enumerate(model.children_):
-        current_count = 0
-        for child_idx in merge:
-            if child_idx < n_samples:
-                current_count += 1  # leaf node
-            else:
-                current_count += counts[child_idx - n_samples]
-        counts[i] = current_count
 
-    linkage_matrix = np.column_stack([model.children_, model.distances_,
-                                      counts]).astype(float)
-
-    # Plot the corresponding dendrogram
-    dendrogram(linkage_matrix, **kwargs)
 
 def main():
     st.title('News Story Clustering')
@@ -68,10 +50,6 @@ def main():
     labels, model = apply_clustering(tfidf_matrix, algorithm='Agglomerative', linkage=linkage_method)
     data['cluster'] = labels
     
-    if st.button('Show Dendrogram'):
-        plt.figure(figsize=(10, 7))
-        plot_dendrogram(model, truncate_mode='level', p=3)
-        st.pyplot(plt)
 
     selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
     filtered_data = data[data['cluster'] == selected_cluster]
