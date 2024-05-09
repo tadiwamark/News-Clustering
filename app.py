@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans, DBSCAN, AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import os
 
@@ -28,23 +29,33 @@ def preprocess_data(data):
 
 
 # Clustering function
-def apply_clustering(tfidf_matrix, algorithm='KMeans'):
-    # Convert sparse matrix to dense if using Agglomerative Clustering
+def apply_clustering(tfidf_matrix, algorithm='Agglomerative', n_clusters=4, linkage='ward'):
     if algorithm == 'Agglomerative':
-        tfidf_matrix = tfidf_matrix.toarray()  # Convert to dense array
+        model = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
+        tfidf_matrix = tfidf_matrix.toarray()  # Agglomerative requires dense matrix
+        model.fit(tfidf_matrix)
+        return model.labels_, model
 
-    if algorithm == 'KMeans':
-        model = KMeans(n_clusters=4, random_state=42)
-    elif algorithm == 'DBSCAN':
-        model = DBSCAN(eps=0.5, min_samples=5)
-    elif algorithm == 'Agglomerative':
-        model = AgglomerativeClustering(n_clusters=4)
-        
-    model.fit(tfidf_matrix)
-    return model.labels_
+def plot_dendrogram(model, **kwargs):
+    # Create linkage matrix and then plot the dendrogram
+    # create the counts of samples under each node
+    counts = np.zeros(model.children_.shape[0])
+    n_samples = len(model.labels_)
+    for i, merge in enumerate(model.children_):
+        current_count = 0
+        for child_idx in merge:
+            if child_idx < n_samples:
+                current_count += 1  # leaf node
+            else:
+                current_count += counts[child_idx - n_samples]
+        counts[i] = current_count
 
+    linkage_matrix = np.column_stack([model.children_, model.distances_,
+                                      counts]).astype(float)
 
-# Main app function
+    # Plot the corresponding dendrogram
+    dendrogram(linkage_matrix, **kwargs)
+
 def main():
     st.title('News Story Clustering')
     data = load_data()
@@ -52,26 +63,36 @@ def main():
         st.write(data)
 
     tfidf_matrix = preprocess_data(data)
-    clustering_algorithm = st.selectbox('Select Clustering Algorithm', ['KMeans', 'DBSCAN', 'Agglomerative'])
+    linkage_method = st.selectbox('Select Linkage Method', ['ward', 'complete', 'average', 'single'])
     
-    data['cluster'] = apply_clustering(tfidf_matrix, algorithm=clustering_algorithm)
+    labels, model = apply_clustering(tfidf_matrix, algorithm='Agglomerative', linkage=linkage_method)
+    data['cluster'] = labels
+    
+    if st.button('Show Dendrogram'):
+        plt.figure(figsize=(10, 7))
+        plot_dendrogram(model, truncate_mode='level', p=3)
+        st.pyplot(plt)
 
-    if np.unique(data['cluster']).size > 1:
-        selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
-        filtered_data = data[data['cluster'] == selected_cluster]
-        
-        if st.checkbox('Show URLs in selected cluster'):
-            for url in filtered_data['url']:
-                st.write(url)
-    else:
-        st.write("No sufficient clusters formed. Try adjusting the clustering parameters or algorithm.")
-
-
-    """if clustering_algorithm != 'DBSCAN' or np.any(data['cluster'] != -1):
-        selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
-        filtered_data = data[data['cluster'] == selected_cluster]"""
-
-
+    selected_cluster = st.selectbox('Select a Cluster', np.unique(data['cluster']))
+    filtered_data = data[data['cluster'] == selected_cluster]
+    
+    if st.checkbox('Show URLs in selected cluster'):
+        for url in filtered_data['url']:
+            st.write(url)
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+    
+   
+
+
+
+
