@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score
 
-@st.cache(allow_output_mutation=True, suppress_st_warning=True)
+
 def find_optimal_clusters(data, max_k=10):
     iters = range(2, max_k+1)
     sse = []
