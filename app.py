@@ -1,5 +1,7 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import silhouette_score
 import streamlit as st
 import os
