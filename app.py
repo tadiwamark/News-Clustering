@@ -3,6 +3,15 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score
 import streamlit as st
 
+# Function to load data
+def load_data():
+    path = '.'  
+    frames = []
+    for file in os.listdir(path):
+        if file.endswith('.csv'):
+            df = pd.read_csv(os.path.join(path, file))
+            frames.append(df)
+
 
 def find_optimal_clusters(data, max_k=10):
     iters = range(2, max_k+1)
