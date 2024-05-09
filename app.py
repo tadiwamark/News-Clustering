@@ -18,9 +18,8 @@ def load_data():
 
 # Preprocess and vectorize data
 def preprocess_data(data):
-    # Modify how NaN values are handled to avoid FutureWarning
-    data = data.copy()  # Create a copy of the data to avoid setting a value on a slice.
-    data['story'] = data['story'].fillna('')  # Use direct assignment instead of inplace modification
+    data = data.copy()  
+    data['story'] = data['story'].fillna('')  
     tfidf_vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = tfidf_vectorizer.fit_transform(data['story'])
     return tfidf_matrix
