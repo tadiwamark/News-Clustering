@@ -50,7 +50,7 @@ def main():
 
     tfidf_matrix = preprocess_data(data)
     linkage_method = st.selectbox('Select Linkage Method', ['ward', 'complete', 'average', 'single'])
-    """Ward Linkage perfoms best"""
+    """Complete Linkage is perfoming best with our current data"""
     
     labels, model = apply_clustering(tfidf_matrix, algorithm='Agglomerative', linkage=linkage_method)
     data['cluster'] = labels
