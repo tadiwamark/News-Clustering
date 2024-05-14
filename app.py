@@ -19,6 +19,7 @@ def load_data():
     for file in os.listdir(path):
         if file.endswith('.csv'):
             df = pd.read_csv(os.path.join(path, file))
+            df = df.dropna(subset=['title', 'story', 'url'])
             frames.append(df)
     return pd.concat(frames, ignore_index=True)
 
